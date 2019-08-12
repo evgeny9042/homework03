@@ -12,16 +12,18 @@
 
 int main(int argc, char const *argv[])
 {
+  // ассоциативный контейнер с стандартным аллокатороам
   std::map<int, int> map1;
-  for ( unsigned int i = 0; i < 10; i++ ) {
+  for ( int i = 0; i < 10; i++ ) {
     map1.insert(std::pair<int, int>(i, my_lib::factorial(i)));
   }
-
+  // ассоциативный контейнер с моим аллокатороам
   std::map<int, int, std::less<int>, my_lib::my_allocator<std::pair<const int, int>>> map2;
-  for ( unsigned int i = 0; i < 10; i++ ) {
+  for (  int i = 0; i < 10; i++ ) {
     map2.insert(std::pair<int, int>(i, my_lib::factorial(i)));
   }
 
+  // функция для вывода значений из ассоциативного контейнера
   auto print_map = [] (auto &map) {    
     std::for_each(map.cbegin(), map.cend(), [] (const std::pair<int, int>&p) {
       std::cout << p.first << "->" << p.second << std::endl;
@@ -33,16 +35,34 @@ int main(int argc, char const *argv[])
   std::cout << "map with my_allocator:" << std::endl;
   print_map(map2);  
 
+  // мой контейнер с стандартным аллокатором
+  my_lib::my_list<int, std::allocator<int>> list1;
+  for ( int i = 0; i < 10; i++ ) {
+    list1.push_back(i);
+  }
 
-  my_lib::my_list<int, my_lib::my_allocator<int>> list;
-  list.push_back(1);
-  list.push_back(42);
+  // мой контейнер с моим аллокатором
+  my_lib::my_list<int, my_lib::my_allocator<int>> list2;
+  for ( int i = 0; i < 10; i++ ) {
+    list2.push_back(i);
+  }
+  
+
+  // функция вывода значений из моего контейнера
+  auto print_list = [] (auto &list) {
+    auto it = list.get_iterator();
+    while ( it.has_next() ) {
+      std::cout << it.get() << " ";
+    }
+    std::cout << std::endl;
+  };
+
+  std::cout << "my list with std allocator:" << std::endl;
+  print_list(list1);
 
   std::cout << "my list with my_allocator:" << std::endl;
-  auto it = list.get_iterator();
-  while(it.has_next()) {
-    std::cout << it.get();
-  }
+  print_list(list2);
+
 
 	return 0;
 }

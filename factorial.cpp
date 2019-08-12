@@ -4,7 +4,7 @@
 
 namespace my_lib {
 	
-unsigned int factorial(unsigned int n)
+int factorial(int n)
 {
   static std::vector<unsigned int> v(2, 1);
   if ( v.size() > n )

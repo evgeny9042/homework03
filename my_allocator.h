@@ -12,12 +12,18 @@ struct my_allocator
   using size_type = std::size_t;
 
   /// Конструктор
-  my_allocator() noexcept{};
+  my_allocator()  {    
+    //m_preallocated = reinterpret_cast<T*>(std::malloc(m_size * sizeof(T)));  
+  };
   /// Конструктор
   template<class U>
-  my_allocator(const my_allocator<U>&) noexcept {};
+  my_allocator( my_allocator<U> &another) noexcept {
+    //m_preallocated = reinterpret_cast<T*>(std::malloc(m_size * sizeof(T)));
+  };
   /// Деструктор
-  ~my_allocator() = default;
+  ~my_allocator() {
+    //std::free(m_preallocated);
+  }
 
   /// для создания другого типа аллокатора
   template<typename U>
@@ -33,6 +39,13 @@ struct my_allocator
       throw std::bad_alloc();
     }
     return reinterpret_cast<T*>(p);
+    /*if ( m_current_indx == m_size - 1 ) {
+      throw std::bad_alloc();
+    } 
+    T* cur_ptr = reinterpret_cast<T*>(m_preallocated);
+    cur_ptr += m_current_indx;
+    m_current_indx++;
+    return cur_ptr;*/
   }
 
   /// освободить память
@@ -53,6 +66,11 @@ struct my_allocator
   {
     p->~T();
   }
+
+//private:
+//  T *m_preallocated{nullptr};
+//  int m_size{10};
+//  int m_current_indx{0};
 };
 
 }

@@ -40,7 +40,8 @@ public:
   /// Деструктор
   ~my_list() noexcept {};
   
-  void push_back(T &&d)
+  template<typename TT>
+  void push_back(TT &&d)
   {
     list_node *node = allocator.allocate(1);
     allocator.construct(node, std::forward<T>(d));   
