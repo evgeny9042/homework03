@@ -12,17 +12,17 @@ struct my_allocator
   using size_type = std::size_t;
 
   /// Конструктор
-  my_allocator()  {    
-    //m_preallocated = reinterpret_cast<T*>(std::malloc(m_size * sizeof(T)));  
+  my_allocator()  {        
+    m_preallocated = reinterpret_cast<T*>(std::malloc(m_size * sizeof(T)));  
   };
   /// Конструктор
   template<class U>
-  my_allocator( my_allocator<U> &another) noexcept {
-    //m_preallocated = reinterpret_cast<T*>(std::malloc(m_size * sizeof(T)));
+  my_allocator( my_allocator<U> &another) noexcept {       
+    std::cout << "my_allocator( my_allocator<U> &another)" << std::endl;
   };
   /// Деструктор
   ~my_allocator() {
-    //std::free(m_preallocated);
+    std::free(m_preallocated);
   }
 
   /// для создания другого типа аллокатора
@@ -33,25 +33,20 @@ struct my_allocator
 
   /// выделит память
   T * allocate(size_t n)
-  {
-    void *p = std::malloc(n * sizeof(T));
-    if ( !p ) {
-      throw std::bad_alloc();
-    }
-    return reinterpret_cast<T*>(p);
-    /*if ( m_current_indx == m_size - 1 ) {
+  {        
+    if ( m_current_indx + n > m_size ) {
+      std::cout << "m_current_indx + n > m_size" << std::endl;      
       throw std::bad_alloc();
     } 
-    T* cur_ptr = reinterpret_cast<T*>(m_preallocated);
+    T* cur_ptr = m_preallocated;
     cur_ptr += m_current_indx;
-    m_current_indx++;
-    return cur_ptr;*/
+    m_current_indx += n;
+    return cur_ptr;
   }
 
   /// освободить память
   void deallocate(T * p, size_t n)
-  {
-    std::free(p);
+  {    
   }
 
   /// сконструировать объект
@@ -67,10 +62,10 @@ struct my_allocator
     p->~T();
   }
 
-//private:
-//  T *m_preallocated{nullptr};
-//  int m_size{10};
-//  int m_current_indx{0};
+private:
+  T *m_preallocated{nullptr};
+  size_t m_size{15};
+  size_t m_current_indx{0};
 };
 
 }

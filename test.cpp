@@ -2,6 +2,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include "factorial.h"
+#include "my_list.h"
 
 BOOST_AUTO_TEST_SUITE(test_lib)
 

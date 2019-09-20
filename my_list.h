@@ -38,7 +38,14 @@ public:
   /// Конструктор
   my_list() noexcept {};
   /// Деструктор
-  ~my_list() noexcept {};
+  ~my_list() noexcept {
+    while ( head != nullptr ) {
+      list_node *tmp_list_node = head;
+      head = head->next;
+      allocator.destroy(tmp_list_node);
+      allocator.deallocate(tmp_list_node, 1);      
+    }
+  };
   
   template<typename TT>
   void push_back(TT &&d)
