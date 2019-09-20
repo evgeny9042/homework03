@@ -22,7 +22,7 @@ struct my_allocator
   };
   /// ƒеструктор
   ~my_allocator() {
-    std::free(m_preallocated);
+    free(m_preallocated);
   }
 
   /// дл€ создани€ другого типа аллокатора

@@ -1,11 +1,12 @@
 
-#include "factorial.h"
-#include "my_list.h"
-#include "my_allocator.h"
 
 #include <map>
 #include <algorithm>
 #include <iostream>
+
+#include "factorial.h"
+#include "my_list.h"
+#include "my_allocator.h"
 
 int main(int argc, char const *argv[])
 {
